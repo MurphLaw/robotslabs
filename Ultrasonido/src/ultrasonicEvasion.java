@@ -26,7 +26,7 @@ public class ultrasonicEvasion {
 	static RegulatedMotor motorL=new EV3LargeRegulatedMotor(MotorPort.B);
 	static RegulatedMotor motorR=new EV3LargeRegulatedMotor(MotorPort.A);
 	static Battery myBat = new Battery();
-	
+	static Float obstacleDistance = 0.35f;
 	
 	public static void main (String[] args)
 	{
@@ -43,10 +43,15 @@ public class ultrasonicEvasion {
 			myUS.fetchSample(mySonarSample, 0);
 			LCD.drawString(msUsound + mySonarSample[0], 0, 3);
 			advance();
-			if(mySonarSample[0] <= 0.3f) {
+			if(mySonarSample[0] <= obstacleDistance) {
 				stop();
-				rotate();
-				while(mySonarSample[0] >= 0.4f);s
+				do{
+					myUS.fetchSample(mySonarSample, 0);
+					rotate();
+				}while(mySonarSample[0] <= obstacleDistance);
+				
+				//while(mySonarSample[0] >= 0.4f);
+				//stop();
 			}
 			
 			
