@@ -30,9 +30,9 @@ public class ultrasonicEvasion {
 	
 	public static void main (String[] args)
 	{
-		
 		SensorMode myTouch = touchSensor.getTouchMode();
 		float [] myTouchSample = new float[myTouch.sampleSize()];
+		
 		
 		SampleProvider myUS = sonicSensor.getDistanceMode();
 		float [] mySonarSample = new float[myUS.sampleSize()];
@@ -40,10 +40,13 @@ public class ultrasonicEvasion {
 		//SampleProvider myAngle = gyroSensor.getAngleMode();
 		//float [] myGyroSample = new float[myAngle.sampleSize()];
 		while(Button.ESCAPE.isUp()) {
+			myTouch.fetchSample(myTouchSample, 0);
+			LCD.drawString(msTouch + myTouchSample[0], 0, 2);
+			
 			myUS.fetchSample(mySonarSample, 0);
 			LCD.drawString(msUsound + mySonarSample[0], 0, 3);
 			advance();
-			if(mySonarSample[0] <= obstacleDistance) {
+			if(mySonarSample[0] <= obstacleDistance || myTouchSample[0]== 1) {
 				stop();
 				do{
 					myUS.fetchSample(mySonarSample, 0);
@@ -53,6 +56,9 @@ public class ultrasonicEvasion {
 				//while(mySonarSample[0] >= 0.4f);
 				//stop();
 			}
+			
+			
+			
 			
 			
 			
